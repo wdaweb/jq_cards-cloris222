@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body,
+      html {
+        width: 100%;
+      }
+
+      .main {
+        width: 500px;
+        height: 700px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: gray;
+        cursor: pointer;
+      }
+      .info {
+        width: calc(500px * 0.75);
+        height: calc(700px * 0.75);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: lightgray;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="info">
+        <div class="title"><h1>遊戲說明</h1></div>
+        <div class="content">
+          <div class="p1">
+            <p>
+              卡牌共分老鼠、貓爪、洞穴三種，點選即可翻開卡牌，請在時間限制內盡可能抓完全部的老鼠吧！
+            </p>
+          </div>
+          <div class="p2">
+            <p></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HW_cardgame</title>
+    <link rel="stylesheet" href="./all.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: '微軟正黑體';
+        cursor: url(./catpawcursor.png) 50 50, auto;
+      }
+
+      body,
+      html {
+        width: 100%;
+      }
+
+      body {
+        background-color: #000;
+        overflow: hidden;
+      }
+
+      #main {
+        width: 1024px;
+        height: 650px;
+        margin: auto;
+        margin-top: 150px;
+        border-radius: 15px;
+        border: 5px solid goldenrod;
+      }
+
+      #left {
+        width: 50%;
+        height: 100%;
+        float: left;
+        border-radius: 1px;
+        background-color: goldenrod;
+        position: relative;
+        transform-style: preserve-3d;
+      }
+
+      .highscore {
+        width: 400px;
+        position: absolute;
+        top: 0%;
+        left: 12%;
+      }
+      .highscore table {
+        width: 400px;
+        margin: auto;
+        margin-top: 180px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bolder;
+        box-shadow: 5px 5px 5px #333;
+        border-collapse: collapse;
+      }
+      .highscore th {
+        color: #fff;
+        background-color: rgb(71, 121, 152);
+        font-size: 30px;
+        height: 40px;
+        line-height: 40px;
+        text-shadow: 1px 1px 3px #333;
+      }
+      .highscore tr {
+        height: 40px;
+      }
+
+      #count {
+        width: 300px;
+        height: 100px;
+        position: absolute;
+        top: 10%;
+        left: 23%;
+        transform: translateY(-50%);
+        color: #000;
+        font-size: 32px;
+        font-weight: bolder;
+        text-align: center;
+        line-height: 59px;
+      }
+      .start {
+        width: 300px;
+        height: 100px;
+        background-color: rgb(220, 84, 84);
+        border-radius: 15px;
+        border: 5px solid #fff;
+        position: absolute;
+        bottom: 5%;
+        left: 8%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 40px;
+        font-weight: bolder;
+        text-align: center;
+        line-height: 90px;
+        box-shadow: 5px 5px 5px #333;
+      }
+
+      .reset {
+        width: 100px;
+        height: 100px;
+        border: 5px solid #fff;
+        border-radius: 50%;
+        background-color: rgb(71, 121, 152);
+        font-size: 43px;
+        position: absolute;
+        bottom: 13%;
+        left: 74%;
+        color: #fff;
+        transform: rotateY(180deg);
+        box-shadow: -5px 5px 5px #333;
+      }
+
+      .timer {
+        font-size: 70px;
+      }
+      .disabled {
+        background-color: lightgray;
+        cursor: not-allowed;
+      }
+
+      #right {
+        width: 50%;
+        height: 100%;
+        float: right;
+        border-radius: 15px;
+        background-color: #000;
+        position: relative;
+      }
+
+      #game {
+        width: 500px;
+        height: 700px;
+        position: absolute;
+        top: 54.5%;
+        left: 55%;
+        transform: translate(-50%, -50%);
+      }
+      .card {
+        width: 100px;
+        height: 150px;
+        border-radius: 15px;
+        position: relative;
+        float: left;
+        margin: 5px;
+        margin-left: 7px;
+        transition: transform 1s;
+        transform-style: preserve-3d;
+      }
+
+      .card-front {
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+        background: url(./images/cp1.png), lightcoral;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: absolute;
+        backface-visibility: hidden;
+      }
+
+      .card-back {
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+        background: url(./images/best-quality.png), goldenrod;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: absolute;
+        transform: rotateY(180deg);
+        backface-visibility: hidden;
+      }
+
+      .card-close {
+        transform: rotateY(180deg);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="left">
+        <div class="highscore">
+          <table>
+            <tr>
+              <th colspan="3">最強貓貓</th>
+            </tr>
+            <tr>
+              <td>玩家名稱</td>
+              <td>花費時間</td>
+              <td>紀錄時間</td>
+            </tr>
+            <tr>
+              <td><span class="text-highscorename1">無</span></td>
+              <td><span class="text-time1">無</span></td>
+              <td><span class="text-date1">無</span></td>
+            </tr>
+            <tr>
+              <td><span class="text-highscorename2">無</span></td>
+              <td><span class="text-time2">無</span></td>
+              <td><span class="text-date2">無</span></td>
+            </tr>
+            <tr>
+              <td><span class="text-highscorename3">無</span></td>
+              <td><span class="text-time3">無</span></td>
+              <td><span class="text-date3">無</span></td>
+            </tr>
+          </table>
+        </div>
+        <div id="count">
+          <p>
+            遊戲時間<br />
+            <span class="timer">0</span>秒
+          </p>
+        </div>
+        <input type="button" value="開始遊戲" class="start" />
+        <button class="reset"><i class="fa-solid fa-rotate-right"></i></button>
+      </div>
+      <div id="right">
+        <div id="game"></div>
+      </div>
+    </div>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+      integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="./moment.min.js"></script>
+    <script>
+      let time = 0
+      let timer
+      const datestr = moment().format('L')
+
+      // 將localstorage資料取出
+
+      const storage = JSON.parse(localStorage.cardgame || '[]')
+      console.log(storage)
+      // 最高分
+      // let highscore = [
+      //   {
+      //     name: storage[0]?.name || '無',
+      //     time: storage[0]?.time || '無',
+      //     date: storage[0]?.date || '無'
+      //   },
+      //   {
+      //     name: storage[1]?.name || '無',
+      //     time: storage[1]?.time || '無',
+      //     date: storage[1]?.date || '無'
+      //   },
+      //   {
+      //     name: storage[2]?.name || '無',
+      //     time: storage[2]?.time || '無',
+      //     date: storage[2]?.date || '無'
+      //   }
+      // ]
+
+      let highscore = []
+
+      // 開始前先將記錄寫入
+      for (let i = 0; i < storage.length; i++) {
+        if (storage === '[]') {
+          $(`.text-highscorename${i + 1}`).text('無')
+          $(`.text-time${i + 1}`).text('無')
+          $(`.text-date${i + 1}`).text('無')
+        } else
+          $(`.text-highscorename${i + 1}`).text(JSON.parse(storage[i].name))
+        $(`.text-time${i + 1}`).text(JSON.parse(storage[i].time) + 's')
+        $(`.text-date${i + 1}`).text(JSON.parse(storage[i].date))
+      }
+
+      // 翻牌設定
+      // 遊戲開始,時間開始計算
+      $('.start').on('click', function () {
+        // 停用開始按鈕
+        $(this).attr('disabled', true)
+        $(this).addClass('disabled')
+        // 產生卡片
+        for (let i = 0; i < 16; i++) {
+          $('#game').append(`
+              <div class='card card-close'>
+                  <div class='card-front'></div>
+                  <div class='card-back'></div>
+                  </div>`)
+
+          // 抽換卡面
+          $('.card')
+            .eq(i)
+            .find('.card-front')
+            .css('background-image', `url(./images/cp${i + 1}.png)`)
+          $('.card')
+            .eq(i)
+            .attr('data-num', `${i + 1}`)
+
+          // 打散
+          const target = Math.round(Math.random() * ($('.card').length - 1))
+          $('.card').eq(target).insertAfter($('.card').eq(i))
+        }
+
+        timer = setInterval(() => {
+          time += 0.1
+          $('.timer').text(time.toFixed(1))
+        }, 100)
+      })
+
+      $('#game').on('click', '.card', function () {
+        // 若場上翻開的牌少於兩張且這張牌尚未被翻開,則這張牌可被翻開
+        if (
+          $('.card:not(.card-close)').length < 2 &&
+          $(this).hasClass('card-close') &&
+          !$(this).hasClass('card-ok')
+        ) {
+          // $('#game').offset().left
+          // const left = $(this).offset().left
+          // const top = $(this).offset().top
+          // console.log(left, top)
+          $(this).removeClass('card-close')
+        }
+        //當場上已翻開卡牌已達到上限兩張時,進行後續的判斷
+        if ($('.card:not(.card-close)').length === 2) {
+          // 如果為一張鼠一張貓則標記ok並漸出消失
+          if (
+            ($('.card:not(.card-close').eq(0).attr('data-num') <= 5 &&
+              $('.card:not(.card-close').eq(1).attr('data-num') >= 12) ||
+            ($('.card:not(.card-close').eq(0).attr('data-num') >= 12 &&
+              $('.card:not(.card-close').eq(1).attr('data-num') <= 5)
+          ) {
+            $('.card:not(.card-close)').addClass('card-ok')
+            $('.card:not(.card-close)').fadeTo(1000, 0)
+          }
+
+          // 如果為一張鼠一張洞穴則加時間加3秒
+          if (
+            ($('.card:not(.card-close').eq(0).attr('data-num') >= 6 &&
+              $('.card:not(.card-close').eq(0).attr('data-num') <= 11 &&
+              $('.card:not(.card-close').eq(1).attr('data-num') >= 12) ||
+            ($('.card:not(.card-close').eq(1).attr('data-num') >= 6 &&
+              $('.card:not(.card-close').eq(1).attr('data-num') <= 11 &&
+              $('.card:not(.card-close').eq(0).attr('data-num') >= 12)
+          ) {
+            time += 3
+          }
+
+          // 無論有沒有符合消除條件都將牌翻回
+          setTimeout(() => {
+            $('.card:not(.card-close)').addClass('card-close')
+
+            // 如果老鼠全都被捕捉到則遊戲結束,跳出恭喜視窗
+
+            if ($('.card-ok').length === 10) {
+              $('.start').attr('disabled', false)
+              $('.start').attr('value', '再來一局')
+              clearInterval(timer)
+              $('#game .card').remove()
+              $('.start').removeClass('disabled')
+
+              // 第一個玩家
+              if ($('.text-time1').text() === '無') {
+                // 儲存通關時間
+                highscore.push(
+                  `{ name: ${prompt('名字')},time:${time.toFixed(
+                    1
+                  )},date: ${datestr}}`
+                )
+                console.log(highscore)
+                localStorage.setItem('cardgame', JSON.stringify(highscore))
+              }
+              // 第二個玩家
+              else if ($('.text-time2').text() === '無') {
+                // 儲存通關時間
+                highscore.push(`
+                  { name: ${prompt('名字')},
+          time: ${time.toFixed(1)} ,
+          date: ${datestr} `)
+                highscoresort = highscore.sort((a, b) => {
+                  return a.time - b.time
+                })
+
+                localStorage.setItem('cardgame', JSON.stringify(highscoresort))
+              }
+              // 第三個玩家
+              else if ($('.text-time3').text() === '無') {
+                // 儲存通關時間
+                highscore.push(`
+                  { name: ${prompt('名字')},
+          time: ${time.toFixed(1)} ,
+          date: ${datestr} `)
+
+                highscoresort = highscore.sort((a, b) => {
+                  return a.time - b.time
+                })
+
+                localStorage.setItem('cardgame', JSON.stringify(highscoresort))
+              }
+              // 三筆填滿後若有新紀錄才加入
+              else if (time < parseInt($('.text-time3').text())) {
+                highscore.push(`
+                  { name: ${prompt('名字')},
+          time: ${time.toFixed(1)} ,
+          date: ${datestr} `)
+
+                highscore = highscore.sort((a, b) => {
+                  return a.time - b.time
+                })
+
+                highscore.pop()
+
+                console.log(highscore)
+
+                localStorage.setItem('cardgame', JSON.stringify(highscore))
+              }
+
+              console.log(highscore)
+
+              // 寫入的迴圈
+              for (let i = 0; i < storage.length; i++) {
+                if (storage === '[]') {
+                  $(`.text-highscorename${i + 1}`).text('無')
+                  $(`.text-time${i + 1}`).text('無')
+                  $(`.text-date${i + 1}`).text('無')
+                } else
+                  $(`.text-highscorename${i + 1}`).text(
+                    JSON.parse(storage[i].name)
+                  )
+                $(`.text-time${i + 1}`).text(JSON.parse(storage[i].time) + 's')
+                $(`.text-date${i + 1}`).text(JSON.parse(storage[i].date))
+              }
+              Swal.fire({
+                icon: 'success',
+                title: '老鼠已全部抓回',
+                text: '恭喜過關'
+              })
+
+              time = 0
+            }
+          }, 1000)
+        }
+      })
+
+      // 刷新頁面
+      $('.reset').on('click', function () {
+        history.go(0)
+      })
+    </script>
+  </body>
+</html>
